@@ -13,6 +13,7 @@ Desplegar una aplicación web escrita en Go en Google Kubernetes Engine (GKE), e
 * Docker
 * Lenguaje de programación Go
 * Helm (opcional)
+* Harbor en VCP GCP (opcional,se puede usar docker hub)
 
 ---
 
@@ -55,15 +56,22 @@ func main() {
 
 ```Dockerfile
 FROM golang:1.21 AS builder
+
 WORKDIR /app
 COPY . .
-RUN go mod init T6 && go build -o server
+
+RUN go mod tidy
+RUN go build -o server
 
 FROM debian:bookworm-slim
+
 WORKDIR /app
 COPY --from=builder /app/server .
+
 EXPOSE 8080
+
 CMD ["./server"]
+
 ```
 
 ---
@@ -156,14 +164,6 @@ Dentro del pod:
 ```sh
 curl http://helloworld-nodeport.default.svc.cluster.local:80
 ```
-
----
-
-## 📅 Notas finales
-
-* No se requiere `Ingress` para acceder vía `NodePort`
-* La solución es ideal para pruebas, demostraciones y desarrollo
-* En producción se recomienda usar `Ingress` con dominio + TLS
 
 ---
 
