@@ -14,19 +14,6 @@ Desplegar una aplicación web escrita en Go en Google Kubernetes Engine (GKE), e
 * Lenguaje de programación Go
 * Helm (opcional)
 * Harbor en VCP GCP (opcional,se puede usar docker hub)
-
----
-
-## 📂 Estructura del Proyecto
-
-```
-T6/
-├── main.go              # Aplicación Go que responde "Hola Mundo"
-├── Dockerfile           # Imagen Docker para compilar y ejecutar Go
-├── Deployment.yaml      # Despliegue en Kubernetes
-├── nodePort.yaml        # Servicio tipo NodePort
-```
-
 ---
 
 ## 💡 main.go
@@ -72,6 +59,25 @@ EXPOSE 8080
 
 CMD ["./server"]
 
+```
+--- 
+## 📦 Docker Build
+```bash
+docker build -t <yourImageName> .
+```
+
+## 🚀 Subir a Harbor: 
+
+```bash
+docker tag helloworld_t6:1.0  harborIp.nip.io/directory/helloworld_t6:1.0
+```
+
+```bash
+docker login harborIp.nip.io -u admin
+```
+
+```bash
+docker push harborIp.nip.io/directory/helloworld_t6:1.0
 ```
 
 ---
